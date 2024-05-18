@@ -21,9 +21,75 @@ calculator.innerHTML = calc;
 const screen = document.getElementById('screen');
 
 screen.value="";
+let number1=null;
+let number2=null;
+let eqFlag = false;
+let opFlag = false;
 
-function calcFun(x)
+function calcFun(x) 
 {
-    screen.value=screen.value+x;
+    if(eqFlag==false)
+    {
+    if((typeof x==='number')&&(opFlag==false))
+    {
+        number1=number1*10+parseFloat(x);
+        screen.value=number1;
+    }
 
+    else if((typeof x==='number')&&(opFlag==true))
+    {
+        screen.value=null;
+        number2=number2*10+parseFloat(x);
+        screen.value=number2;
+    }
+
+    else if(x==='=')
+    {
+        eqFlag=true;
+        number1=operators(number1,number2,operator);
+        screen.value=number1;
+    }
+
+    else if(x==='CE')
+    {
+        screen.value=null;
+        number1=0;
+        number2=0;
+        operator = null
+        opFlag=false;
+    }
+
+    else
+    {
+        operator=x;
+        opFlag=true;
+    }
+    }
+    else if((eqFlag==true)&&(x!='='))
+    {
+        screen.value=null;
+        number1=0;
+        number2=0;
+        operator = null
+        opFlag=false;
+        eqFlag=false;
+        calcFun(x);
+    }
+    else{
+    number1=operators(number1,number2,operator);
+    screen.value=number1;
+    }
+}
+function operators(a,b,y)
+{
+    let value=0;
+    if(y==='+')
+    value=a+b;
+    else if(y==='-')
+    value=a-b;
+    else if(y==='/')
+    value=a/b;
+    else if(y==='x')
+    value=a*b;
+return value;
 }
